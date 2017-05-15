@@ -24,12 +24,18 @@ class SiteController extends Controller
         ];
     }
 
+	/**
+	 * /age/20/ids/8
+	 */
     public function actionIndex($ids=9, $age=22)
     {
         $this->layout = null;
         return $this->render('abc', ["name"=>"Josin", "domain"=>'www.supjos.cn']);
     }
     
+	/**
+	 * /name/Josin/age/28/place/BeiJing
+	 */
     public function actionSay($name='Liming', $age = 18, $place)
     {
         return ['a', 'b', 'c'];
