@@ -17,7 +17,7 @@ class SiteController extends Controller
         return [
             'verbs'=>[
                 'actions'=>[
-                    'index' => ['GEt']
+                    'index' => ['post']
                 ]
             ]
         ];

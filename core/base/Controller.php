@@ -61,7 +61,7 @@ class Controller extends Object
      * @param array $variables The view file variables
      * @return string HTML code
      */
-    protected function render($viewName, array $variables)
+    protected function render($viewName, array $variables = [])
     {
         $result = $this->getView()->getViewFileResult($viewName, $variables);
         return $result;

@@ -108,14 +108,33 @@ class BaseJframe
     }
 
     /**
+     * Get the aliase value from the setting Aliases
+     * @param string $aliasName
+     */
+    public static function getAlias($aliasName)
+    {
+        if (array_key_exists($aliasName, self::$aliases)) {
+            return self::$aliases[$aliasName];
+        }
+    }
+
+    /**
      * @param string $className
+     * @param array $params The properties which you want to set for the newly instance Class
      * @return Object The instance of the given class with the name
      */
-    public static function createObject($className)
+    public static function createObject($className, array $params = [])
     {
         $classInstance = (new \ReflectionClass($className))->newInstanceArgs();
         if (!$classInstance instanceof $className) {
             throw new ClassNotFound("Create Class Instance [[{$className}]] Failure.");
+        }
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                if (property_exists($classInstance, $k)) {
+                    $classInstance->$key = $value;
+                }
+            }
         }
         return $classInstance;
     }

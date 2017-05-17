@@ -20,6 +20,9 @@ class Object
      */
     public function __get($name)
     {
+        if (property_exists($this, $name)){
+            return $this->$name;
+        }
         $methodName = 'get' . ucwords($name);
         if (method_exists($this, $methodName)){
             return call_user_func([$this, $methodName]);

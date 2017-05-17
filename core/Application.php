@@ -19,7 +19,7 @@ class Application extends base\Object
     /**
      * @var array All the instance of the given class
      */
-    private $_set = [];
+    private static $_set = [];
 
     public function __construct()
     {
@@ -32,14 +32,14 @@ class Application extends base\Object
      */
     public function __get($className)
     {
-        if (empty($this->_set[$className]) || !($this->_set[$className] instanceof $className)){
+        if (empty(static::$_set[$className])){
             if (!empty(static::$classNameMap[$className])){
-                $this->_set[$className] = Jframe::createObject(static::$classNameMap[$className]);
+                static::$_set[$className] = Jframe::createObject(static::$classNameMap[$className]);
             } else {
                 throw new exception\ClassNotFound("Component Class [[{$className}]] Not Found.", '105');
             }
         }
-        return $this->_set[$className];
+        return static::$_set[$className];
     }
 
     /**
@@ -70,24 +70,6 @@ class Application extends base\Object
     public function getVersion()
     {
         return $this->version;
-    }
-
-    /* The View of the Controller */
-
-    private $view = null;
-
-    /**
-     * The View of the Jframe to show the html
-     * @return \Jframe\base\View $view
-     */
-    public function getView()
-    {
-        if ($this->view !== null) {
-            return $this->view;
-        } else {
-            $this->view = new base\View();
-            return $this->view;
-        }
     }
 
     /**

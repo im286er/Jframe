@@ -10,6 +10,7 @@ namespace app\modules\b\controllers;
 
 use Jframe;
 use Jframe\base\Controller;
+use Jframe\base\Response;
 
 class SiteController extends Controller
 {
@@ -24,26 +25,21 @@ class SiteController extends Controller
         ];
     }
 
-	/**
-	 * /age/20/ids/8
-	 */
     public function actionIndex($ids=9, $age=22)
     {
-        $this->layout = null;
+        $this->layout = false;
         return $this->render('abc', ["name"=>"Josin", "domain"=>'www.supjos.cn']);
     }
     
-	/**
-	 * /name/Josin/age/28/place/BeiJing
-	 */
-    public function actionSay($name='Liming', $age = 18, $place)
+    public function actionSay($name='Liming', $age = 18, $place="hel")
     {
-        return ['a', 'b', 'c'];
+        $this->layout = false;
+        return $this->render('abc', ['name'=>'supjos', 'domain'=>'supjos.cn']);
     }
     
     public function actionJson()
     {
-        Jframe::$app->response->format = Jframe\base\Response::FORMAT_XML;
+        Jframe::$app->response->format = Response::FORMAT_JSON;
         return ['name'=>'Josin', 'domain'=>'www.supjos.cn', 'age'=>'24'];
     }
     
