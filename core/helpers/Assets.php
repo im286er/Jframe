@@ -14,7 +14,7 @@ class Assets
 
     public static function register()
     {
-        $path = '/core/helpers/bootstrap/';
+        $path = '/bootstrap/';
         if (!empty(static::$js)) {
             foreach (static::$js as $value) {
                 echo Html::registerJsFile($path . $value);
