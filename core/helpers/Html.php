@@ -88,7 +88,7 @@ class Html
     {
         return '</form>';
     }
-    
+
     /**
      * @param type $name
      * @param array $htmlOptions
@@ -97,38 +97,39 @@ class Html
     {
         return static::beginTag($name, $htmlOptions);
     }
-    
+
     /**
      * @param type $name
      * @param type $value
      * @param array $htmlOptions
      * @return string
      */
-    public static function button($value, array $htmlOptions = [], $name='button')
+    public static function button($value, array $htmlOptions = [], $name = 'button')
     {
-        return static::beginTag($name, array($htmlOptions, ['value'=>$value]));
+        return static::beginTag($name, array($htmlOptions, ['value' => $value]));
     }
+
     /**
      * @param type $name
      * @param type $value
      * @param array $htmlOptions
      * @return string
      */
-    public static function submitButton($value, array $htmlOptions = [], $name='button')
+    public static function submitButton($value, array $htmlOptions = [], $name = 'button')
     {
-        return static::beginTag($name, array_merge($htmlOptions, ['type'=>'submit'])) . $value . static::endTag($name);
+        return static::beginTag($name, array_merge($htmlOptions, ['type' => 'submit'])) . $value . static::endTag($name);
     }
-    
+
     /**
      * @param array $htmlOptions
      * @param type $name
      * @return type
      */
-    public static function selectInput(array $options = [], array $htmlOptions = [], $name='select')
+    public static function selectInput(array $options = [], array $htmlOptions = [], $name = 'select')
     {
         $begin = static::beginTag($name, $htmlOptions);
         $op = '';
-        foreach($options as $k=>$v){
+        foreach ($options as $k => $v) {
             $op .= '<option value="' . $k . '">' . $v . '</option>';
         }
         return $begin . $op . static::endTag($name);

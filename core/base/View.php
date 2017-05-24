@@ -4,7 +4,7 @@
  * This is the View of the Jframe
  * License : MIT
  * Copyright (c) 2017-2020 supjos.cn All Rights Reserved.
- * @author Josin <774542606@qq.com | www.supjos.cn>
+ * @author Josin <774542602@qq.com | www.supjos.cn>
  */
 
 namespace Jframe\base;
@@ -53,7 +53,7 @@ class View extends Object
      */
     private function reslash($name)
     {
-        return str_replace('/', '\\', $name);
+        return $name;
     }
 
     /**

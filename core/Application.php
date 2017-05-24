@@ -7,15 +7,12 @@ use Jframe\base\UrlManager;
 
 class Application extends base\Object
 {
+
     /**
      * @var array The system's important components 
      */
-    private static $classNameMap = [
-        'request'  => '\Jframe\base\Request',
-        'response' => '\Jframe\base\Response',
-        'view'     => '\Jframe\base\View'
-    ];
-    
+    private static $classNameMap = [];
+
     /**
      * @var array All the instance of the given class
      */
@@ -25,61 +22,29 @@ class Application extends base\Object
     {
         Jframe::$app = $this;
     }
-    
+
     /**
      * @param string $className
      * @return Object The object or instance of the Given Class Name
      */
     public function __get($className)
     {
-        if (empty(static::$_set[$className])){
-            if (!empty(static::$classNameMap[$className])){
-                static::$_set[$className] = Jframe::createObject(static::$classNameMap[$className]);
+        if (empty(static::$_set[$className])) {
+            if (!empty(static::$classNameMap[$className])) {
+                $tmpComponentInstance = Jframe::createObject(static::$classNameMap[$className]['class']);
+                // If contains the additional attributes to attach it to the Object
+                unset(static::$classNameMap[$className]['class']);
+                if (!empty(static::$classNameMap[$className])) {
+                    foreach (static::$classNameMap[$className] as $option => $value) {
+                        $tmpComponentInstance->$option = $value;
+                    }
+                }
+                static::$_set[$className] = $tmpComponentInstance;
             } else {
                 throw new exception\ClassNotFound("Component Class [[{$className}]] Not Found.", '105');
             }
         }
         return static::$_set[$className];
-    }
-
-    /**
-     * Return the status code for access-user
-     * @var int $statusCode StatusCode default : 200 : OK
-     */
-    private $statusCode = 200;
-
-    /**
-     * Return the status code for access-user
-     * @return int $statusCode StatusCode default : 200 : OK
-     */
-    public function getStatusCode()
-    {
-        return $this->statusCode;
-    }
-
-    /**
-     * The version of the Jframe
-     * @var string $version
-     */
-    private $version = '1.5.0';
-
-    /**
-     * Return the version info. of the Jframe
-     * @return string version name
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * __set() method implement the function which can modify the class's attribute external.
-     * @param string $name The attribute you want to set
-     * @param mixed $value The value for the attribute
-     */
-    public function __set($name, $value)
-    {
-        $this->$name = $value;
     }
 
     /**
@@ -91,6 +56,9 @@ class Application extends base\Object
         // 初始化一些必要组件
         if (!empty($config)) {
             // 可以添加额外的需要初始化的组件的配置
+            $components = $config['components'];
+            self::$classNameMap = $components;
+            unset($config['components']);
             // 其余的配置文件附属到Application对象上
             foreach ($config as $key => $value) {
                 Jframe::$app->$key = $value;
@@ -99,4 +67,5 @@ class Application extends base\Object
         // 初始化后进行URL的路由处理
         (new UrlManager())->dealUrl();
     }
+
 }

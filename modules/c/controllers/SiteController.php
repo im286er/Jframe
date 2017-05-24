@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace app\modules\b\controllers;
+namespace app\modules\c\controllers;
 
 use Jframe;
 use Jframe\base\Controller;

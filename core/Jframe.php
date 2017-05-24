@@ -10,6 +10,7 @@ class Jframe extends \Jframe\BaseJframe
 {
     
 }
+
 /**
  * The autoload function which can use to load the class file automatically
  */

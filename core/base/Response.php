@@ -4,7 +4,7 @@
  * This is the Base class of the response from the web server
  * License : MIT
  * Copyright (c) 2017-2020 supjos.cn All Rights Reserved.
- * @author Josin <774542606@qq.com | www.supjos.cn>
+ * @author Josin <774542602@qq.com | www.supjos.cn>
  */
 
 namespace Jframe\base;
@@ -70,7 +70,7 @@ class Response extends Object
     {
         if (strcmp($this->format, Response::FORMAT_RAW) == 0) {
             // Not that the array can not be outputed by echo
-            if (is_array($this->data) || is_object($this->data)){
+            if (is_array($this->data) || is_object($this->data)) {
                 echo '<pre>';
                 print_r($this->data);
                 echo '</pre>';
@@ -109,14 +109,14 @@ class Response extends Object
                 $str .= "<{$key}>" . $child . "</{$key}>";
             } else {
                 if (is_numeric($val)) {
-                    if (is_numeric($key)){
+                    if (is_numeric($key)) {
                         $str .= "<item>{$val}</item>";
                     } else {
                         $str .= "<{$key}>{$val}</{$key}>";
                     }
                 } else {
-                    if (is_numeric($key)){
-                        $str .= "<item><![CDATA[{$val}]]></item>";   
+                    if (is_numeric($key)) {
+                        $str .= "<item><![CDATA[{$val}]]></item>";
                     } else {
                         $str .= "<{$key}><![CDATA[{$val}]]></{$key}>";
                     }

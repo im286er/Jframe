@@ -24,25 +24,6 @@ class BaseJframe
     public static $app = null;
 
     /**
-     * The initialse code for the PHP Application
-     */
-    public function __construct()
-    {
-        
-    }
-
-    /**
-     * @param string $name
-     */
-    public function __get($name)
-    {
-        $methodName = 'get' . ucwords($name);
-        if (method_exists($this, $methodName)) {
-            return call_user_func([$this, $methodName]);
-        }
-    }
-
-    /**
      * $aliases： The system's aliases
      * @var array The aliases which can be make the system to found the file and require or include.
      */
@@ -69,7 +50,6 @@ class BaseJframe
      */
     public static function autoload($className)
     {
-        //exit($className);
         if (!empty(self::$classMap) && \array_key_exists($className, self::$classMap)) {
             require_once(self::$classMap[$className]);
         } else {
@@ -79,7 +59,7 @@ class BaseJframe
             // 将命名空间的其余路径合并成可用的路径
             $alias = '@' . $rootAlias;
             if (!empty(self::$aliases) && \array_key_exists($alias, self::$aliases)) {
-                $classFilePath = self::$aliases[$alias] . substr($className, $slashPosition);
+                $classFilePath = self::$aliases[$alias] . str_replace('\\', '/', substr($className, $slashPosition));
                 $classFileName = $classFilePath . '.php';
                 if (\file_exists($classFileName)) {
                     require_once($classFileName);
@@ -131,7 +111,7 @@ class BaseJframe
         }
         if (!empty($params)) {
             foreach ($params as $key => $value) {
-                if (property_exists($classInstance, $k)) {
+                if (property_exists($classInstance, $key)) {
                     $classInstance->$key = $value;
                 }
             }

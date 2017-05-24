@@ -11,12 +11,13 @@ namespace Jframe\helpers;
 
 class AppAsset extends Assets
 {
+
     public static $js = [
         'js/jquery-1.12.4.min.js',
         'js/bootstrap.min.js',
     ];
-    
     public static $css = [
         'css/bootstrap.min.css',
     ];
+
 }

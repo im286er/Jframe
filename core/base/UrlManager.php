@@ -52,9 +52,9 @@ class UrlManager extends Object
                     DIRECTORY_SEPARATOR . $controllerName . '.php';
             if (file_exists($controller)) {
                 // Method
-                $controllerClassName = 'app' . DIRECTORY_SEPARATOR . 'modules' .
+                $controllerClassName = str_replace("/", "\\", 'app' . DIRECTORY_SEPARATOR . 'modules' .
                         DIRECTORY_SEPARATOR . $urlInfo[0] . DIRECTORY_SEPARATOR . 'controllers' .
-                        DIRECTORY_SEPARATOR . $controllerName;
+                        DIRECTORY_SEPARATOR . $controllerName);
                 $controllerInstance = new \ReflectionClass($controllerClassName);
                 if (!isset($urlInfo[2])) {
                     $urlInfo[2] = Jframe::$app->defaultMethod;
@@ -83,7 +83,8 @@ class UrlManager extends Object
                     DIRECTORY_SEPARATOR . $controllerName . '.php';
             if (file_exists($controller)) {
                 // fuction and parameter check
-                $controllerClassName = 'app' . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controllerName;
+                $controllerClassName = str_replace("/", "\\", 'app' .
+                        DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controllerName);
                 $controllerInstance = new \ReflectionClass($controllerClassName);
                 if (!isset($urlInfo[1])) {
                     $urlInfo[1] = Jframe::$app->defaultMethod;
@@ -102,7 +103,7 @@ class UrlManager extends Object
             }
         }
     }
-    
+
     private static function changeLowerArray($value)
     {
         return strtolower($value);
@@ -124,6 +125,7 @@ class UrlManager extends Object
         // Check the function which you has the privileges to execute
         $behaviors = $controllerObj->behaviors();
         if (!empty($behaviors)) {
+            // To deal with the actions
             if (isset($behaviors['verbs']['actions'])) {
                 // Execute the verb filter before the function invoke
                 foreach ($behaviors['verbs']['actions'] as $k => $v) {
@@ -135,6 +137,16 @@ class UrlManager extends Object
                         }
                     }
                 }
+            }
+            // To deal the access controller
+            if (isset($behaviors['access'])) {
+                if (!isset($behaviors['access']['class'])) {
+                    throw new Jframe\exception\ParameterNotMatch("Paramter [[class]] must be set!", 106);
+                }
+                $className = $behaviors['access']['class'];
+                unset($behaviors['access']['class']);
+                $instance = Jframe::createObject($className, $behaviors['access']);
+                $instance->init($controllerObj, strtolower(ucwords(substr($method, 6))));
             }
         }
         // After check the ver fileter continue the body action
@@ -167,18 +179,13 @@ class UrlManager extends Object
         // Do something if you want to change the data of the code
         $response = Jframe::$app->response;
         $response->data = $result;
-        header('Status Code :' . Jframe::$app->request->statusCode);
-        switch ($response->format)
-        {
+        switch ($response->format) {
             case Response::FORMAT_RAW:
                 return $response->formatOut();
-                break;
             case Response::FORMAT_JSON:
                 return $response->formatOut();
-                break;
             case Response::FORMAT_XML:
                 return $response->formatOut();
-                break;
         }
         // After doing the normal thing in the body action, do the ending jobs
         // Adding some code below
