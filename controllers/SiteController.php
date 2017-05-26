@@ -27,7 +27,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return Jframe::$app;
         echo "<a href='site/say/name/Micosoft'>actionSay()</a>";
     }
 
