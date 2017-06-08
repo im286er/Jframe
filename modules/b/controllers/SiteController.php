@@ -15,6 +15,7 @@ use Jframe\behavior\AccessFilter;
 
 class SiteController extends Controller
 {
+
     /*
      * behaviors动作解析：
      * return [
@@ -53,12 +54,12 @@ class SiteController extends Controller
                 'class' => AccessFilter::className(),
                 'only' => ['index', 'say'],
                 'rules' => [
-                        [
+                    [
                         'allow' => true,
                         'roles' => '?',
                     //'verbs' => ['get']
                     ],
-                        [
+                    [
                         'allow' => true,
                         'verbs' => ['get']
                     ]
@@ -70,7 +71,7 @@ class SiteController extends Controller
     public function actionIndex($ids = 9, $age = 22)
     {
         $this->layout = 'import';
-        return $this->render('abc', ["name" => "Josin", "domain" => 'www.supjos.cn']);
+        return $this->render('//test/abc', ["name" => "Josin", "domain" => 'www.supjos.cn']);
     }
 
     public function actionSay($name, $age = 18, $place = "hel")
@@ -82,6 +83,12 @@ class SiteController extends Controller
     public function actionJson()
     {
         Jframe::$app->response->format = Response::FORMAT_JSON;
+        return ['name' => 'Josin', 'domain' => 'www.supjos.cn', 'age' => '24'];
+    }
+
+    public function actionXml()
+    {
+        Jframe::$app->response->format = Response::FORMAT_XML;
         return ['name' => 'Josin', 'domain' => 'www.supjos.cn', 'age' => '24'];
     }
 

@@ -9,7 +9,7 @@ class Application extends base\Object
 {
 
     /**
-     * @var array The system's important components 
+     * @var array The system's important components
      */
     private static $classNameMap = [];
 
@@ -31,14 +31,9 @@ class Application extends base\Object
     {
         if (empty(static::$_set[$className])) {
             if (!empty(static::$classNameMap[$className])) {
-                $tmpComponentInstance = Jframe::createObject(static::$classNameMap[$className]['class']);
-                // If contains the additional attributes to attach it to the Object
+                $class = static::$classNameMap[$className]['class'];
                 unset(static::$classNameMap[$className]['class']);
-                if (!empty(static::$classNameMap[$className])) {
-                    foreach (static::$classNameMap[$className] as $option => $value) {
-                        $tmpComponentInstance->$option = $value;
-                    }
-                }
+                $tmpComponentInstance = Jframe::createObject($class, !empty(static::$classNameMap[$className]) ? static::$classNameMap[$className] : []);
                 static::$_set[$className] = $tmpComponentInstance;
             } else {
                 throw new exception\ClassNotFound("Component Class [[{$className}]] Not Found.", '105');
@@ -53,19 +48,15 @@ class Application extends base\Object
      */
     public function run($config = [])
     {
-        // 初始化一些必要组件
         if (!empty($config)) {
-            // 可以添加额外的需要初始化的组件的配置
             $components = $config['components'];
             self::$classNameMap = $components;
             unset($config['components']);
-            // 其余的配置文件附属到Application对象上
             foreach ($config as $key => $value) {
                 Jframe::$app->$key = $value;
             }
         }
-        // 初始化后进行URL的路由处理
-        (new UrlManager())->dealUrl();
+        Jframe::createObject(UrlManager::className())->dealUrl();
     }
 
 }

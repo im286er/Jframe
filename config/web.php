@@ -2,7 +2,9 @@
 
 return [
     'db' => [
-        'dsn' => 'mysql:host=localhost;username=root;password=root'
+        'dsn' => 'mysql:host=localhost;dbname=Jframe',
+        'username' => 'root',
+        'password' => 'root'
     ],
     // Default controller when not assigned
     'defaultController' => 'site',
@@ -21,6 +23,9 @@ return [
         ],
         'user' => [
             'class' => 'Jframe\base\identity\WebUser',
+        ],
+        'Reflex' => [
+            'class' => 'Jframe\di\Reflex',
         ]
     ],
 ];

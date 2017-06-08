@@ -27,7 +27,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        echo "<a href='site/say/name/Micosoft'>actionSay()</a>";
+        echo "<a href='index.php/site/say/name/Micosoft'>actionSay()</a>";
     }
 
     public function actionSay($name)
