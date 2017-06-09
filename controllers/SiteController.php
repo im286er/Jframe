@@ -10,6 +10,7 @@ namespace app\controllers;
 
 use Jframe;
 use Jframe\base\Controller;
+use Jframe\di\Reflex;
 
 class SiteController extends Controller
 {

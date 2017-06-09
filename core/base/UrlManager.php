@@ -178,11 +178,11 @@ class UrlManager extends Object
         // Invoke the function
         $result = $controllerInstanceRef->invokeArgs($controllerObj, $passParam);
         // Do something if you want to change the data of the code
-        $controllerObj->afterAction();
-        //
         $response = Jframe::$app->response;
         $response->data = $result;
-        return $response->formatOut();
+        $response->formatOut();
+        $controllerObj->afterAction();
+        exit(0);
     }
 
 }

@@ -9,6 +9,7 @@
 namespace Jframe;
 
 use Jframe\exception\ClassNotFound;
+use Jframe\exception\ClassNotSetException;
 
 /**
  * The Base class for the PHP Jframe, every one can access it using the Jframe::$app
@@ -19,7 +20,7 @@ class BaseJframe
 
     /**
      * Return the Application's object to the user to use the global variables
-     * @var Application $app 
+     * @var Application $app
      */
     public static $app = null;
 
@@ -33,7 +34,7 @@ class BaseJframe
 
     /**
      * The class-map loading array
-     * @var array $classMap The classmap file which can make the load system a little more faster 
+     * @var array $classMap The classmap file which can make the load system a little more faster
      */
     private static $classMap = [];
 
@@ -99,24 +100,41 @@ class BaseJframe
     }
 
     /**
-     * @param string $className
+     * @param string $classData
      * @param array $params The properties which you want to set for the newly instance Class
      * @return Object The instance of the given class with the name
      */
-    public static function createObject($className, array $params = [])
+    public static function createObject($classData, array $params = [])
     {
-        $classInstance = (new \ReflectionClass($className))->newInstanceArgs();
-        if (!$classInstance instanceof $className) {
-            throw new ClassNotFound("Create Class Instance [[{$className}]] Failure.");
+        if (is_string($classData)) {
+            $tmpClassData = $classData;
+            $classData = [];
+            $classData['class'] = $tmpClassData;
         }
-        if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                if (property_exists($classInstance, $key)) {
-                    $classInstance->$key = $value;
+        if (!isset($classData['class'])) {
+            throw new ClassNotSetException("[[class]] attribute not set.", 300);
+        }
+        $className = $classData['class'];
+        unset($classData['class']);
+        $reflectionClass = new \ReflectionClass($className);
+        $hasContructor = $reflectionClass->getConstructor();
+        if (is_null($hasContructor)) {
+            $classObject = $reflectionClass->newInstanceArgs();
+        } else {
+            $classObject = $reflectionClass->newInstanceArgs($classData);
+        }
+        if ($classObject instanceof $className) {
+            if (!empty($params)) {
+                foreach ($params as $property => $value) {
+                    if (property_exists($classObject, $property)) {
+                        $propertyAccess = new \ReflectionProperty($className, $property);
+                        $propertyAccess->setAccessible(true);
+                        $propertyAccess->setValue($classObject, $value);
+                    }
                 }
             }
+            return $classObject;
         }
-        return $classInstance;
     }
 
     /**

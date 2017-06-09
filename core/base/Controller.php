@@ -71,6 +71,7 @@ class Controller extends Component
     public function afterAction()
     {
         $this->trigger(self::EVENT_AFTER_ACTION);
+        echo 'after';
     }
 
     /**
