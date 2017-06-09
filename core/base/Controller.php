@@ -13,8 +13,18 @@ namespace Jframe\base;
 
 use Jframe;
 
-class Controller extends Object
+class Controller extends Component
 {
+
+    public function __construct()
+    {
+        $this->on(self::EVENT_BEFORE_ACTION, function() {
+            echo 'Before';
+        });
+    }
+
+    const EVENT_BEFORE_ACTION = 'beforeAction';
+    const EVENT_AFTER_ACTION = 'afterAction';
 
     /**
      * @var string|null|false The default layout file to render before other file
@@ -43,7 +53,24 @@ class Controller extends Object
      */
     public function behaviors()
     {
-        
+
+    }
+
+    /**
+     * Before Event-Action
+     */
+    public function beforeAction()
+    {
+        $this->trigger(self::EVENT_BEFORE_ACTION);
+        echo 'before';
+    }
+
+    /**
+     * After Event-Action
+     */
+    public function afterAction()
+    {
+        $this->trigger(self::EVENT_AFTER_ACTION);
     }
 
     /**

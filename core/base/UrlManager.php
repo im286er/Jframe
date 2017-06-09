@@ -49,12 +49,12 @@ class UrlManager extends Object
             Jframe::$app->pureController = $urlInfo[1];
             $controllerName = ucwords($urlInfo[1]) . 'Controller';
             $controller = $module . DIRECTORY_SEPARATOR . 'controllers' .
-                    DIRECTORY_SEPARATOR . $controllerName . '.php';
+                DIRECTORY_SEPARATOR . $controllerName . '.php';
             if (file_exists($controller)) {
                 // Method
                 $controllerClassName = str_replace("/", "\\", 'app' . DIRECTORY_SEPARATOR . 'modules' .
-                        DIRECTORY_SEPARATOR . $urlInfo[0] . DIRECTORY_SEPARATOR . 'controllers' .
-                        DIRECTORY_SEPARATOR . $controllerName);
+                    DIRECTORY_SEPARATOR . $urlInfo[0] . DIRECTORY_SEPARATOR . 'controllers' .
+                    DIRECTORY_SEPARATOR . $controllerName);
                 $controllerInstance = new \ReflectionClass($controllerClassName);
                 if (!isset($urlInfo[2])) {
                     $urlInfo[2] = Jframe::$app->defaultMethod;
@@ -80,11 +80,11 @@ class UrlManager extends Object
             Jframe::$app->pureController = $urlInfo[0];
             $controllerName = ucwords($urlInfo[0]) . 'Controller';
             $controller = ROOT . DIRECTORY_SEPARATOR . 'controllers' .
-                    DIRECTORY_SEPARATOR . $controllerName . '.php';
+                DIRECTORY_SEPARATOR . $controllerName . '.php';
             if (file_exists($controller)) {
                 // fuction and parameter check
                 $controllerClassName = str_replace("/", "\\", 'app' .
-                        DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controllerName);
+                    DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controllerName);
                 $controllerInstance = new \ReflectionClass($controllerClassName);
                 if (!isset($urlInfo[1])) {
                     $urlInfo[1] = Jframe::$app->defaultMethod;
@@ -116,6 +116,7 @@ class UrlManager extends Object
     private function invokeMethodWithParameter($urlInfo, $controllerClassName, $method, $controllerName)
     {
         $controllerObj = new $controllerClassName();
+        $controllerObj->beforeAction();
         // Some variables in the Jframe
         $controllerObj->id = $controllerName;
         Jframe::$app->viewId = $method;
@@ -177,20 +178,11 @@ class UrlManager extends Object
         // Invoke the function
         $result = $controllerInstanceRef->invokeArgs($controllerObj, $passParam);
         // Do something if you want to change the data of the code
+        $controllerObj->afterAction();
+        //
         $response = Jframe::$app->response;
         $response->data = $result;
-        switch ($response->format) {
-            case Response::FORMAT_RAW:
-                return $response->formatOut();
-            case Response::FORMAT_JSON:
-                return $response->formatOut();
-            case Response::FORMAT_XML:
-                return $response->formatOut();
-        }
-        // After doing the normal thing in the body action, do the ending jobs
-        // Adding some code below
-        // Terminate the application with a standard lifestyle
-        exit(0);
+        return $response->formatOut();
     }
 
 }

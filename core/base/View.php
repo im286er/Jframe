@@ -71,11 +71,11 @@ class View extends Object
         } elseif ($layout === null) {
             // To render the file with the default layout file named ['main']
             $content = $this->getObClean($file, $variables);
-            echo $this->getObClean($layoutFile . 'main', array_merge(['content' => $content]));
+            echo $this->getObClean($layoutFile . 'main', ['content' => $content]);
         } else {
             // Render the file with the layou file named [[$layout]];
             $content = $this->getObClean($file, $variables);
-            echo $this->getObClean($layoutFile . $layout, array_merge(['content' => $content]));
+            echo $this->getObClean($layoutFile . $layout, ['content' => $content]);
         }
     }
 
