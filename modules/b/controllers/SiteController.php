@@ -46,6 +46,7 @@ class SiteController extends Controller
 
     public function actionIndex($ids = 9, $age = 22)
     {
+        return Jframe::$app;
         $this->layout = 'import';
         $postData = Jframe::$app->request->post();
         $model = new UserModel();

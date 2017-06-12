@@ -124,10 +124,17 @@ class BaseJframe
             $tmpClassData = $classData;
             $classData = [];
             $classData['class'] = $tmpClassData;
+<<<<<<< HEAD
         }
         if (!isset($classData['class'])) {
             throw new ClassNotSetException("[[class]] attribute not set.", 300);
         }
+=======
+        }
+        if (!isset($classData['class'])) {
+            throw new ClassNotSetException("[[class]] attribute not set.", 300);
+        }
+>>>>>>> c2d7a0f1bde96037cf7996f7fa35c5f6aee2ce31
         $className = $classData['class'];
         unset($classData['class']);
         $reflectionClass = new \ReflectionClass($className);
