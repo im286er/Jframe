@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Welcome everyone to given some advices to improve the Jframe PHP Framework
+ *
+ * ``` The Event class provides the properties Event handler need.
+ * Copyright (c) 2017.-2020 Jframe www.supjos.cn All Rights Reserved.
+ * Author : Josin
+ * Email  : 774542602@qq.com
+ */
+
 namespace Jframe\base;
 
 /**
- * Event is the base class for all event classes.
+ * Event is the base class for all event classes.context
  */
 class Event extends Object
 {

@@ -18,6 +18,7 @@ class Object
     /**
      * __get() method implement the function which can invoke the function in a way of value-access.
      * @param string $name The method which you want to invoke
+     * @return mixed
      */
     public function __get($name)
     {

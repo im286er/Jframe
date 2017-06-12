@@ -1,5 +1,28 @@
 <?php
 
+/**
+ * Welcome everyone to given some advices to improve the Jframe PHP Framework
+ *
+ * ```The Component Library class in Jframe gives us more way to manage the Event
+ * Each class derived from the Jframe\base\Component has the feature to on/off/trigger
+ * the event to do the special thing, when user want to manage the full process.
+ *
+ * Such as : Below is an example for the user to do the Component-Event job
+ * ``` One class derived from the Component is the Jframe\base\Controller
+ * ```php
+ * class UserController extends Controller{
+ *     // To validate the user login
+ *     public function actionValidate(){
+ *        $this->on("afterAction", function(){
+ *            echo 'I"m the afterAction after the action finished!';
+ *        });
+ *     }
+ * }
+ * Copyright (c) 2017.-2020 Jframe www.supjos.cn All Rights Reserved.
+ * Author : Josin
+ * Email  : 774542602@qq.com
+ */
+
 namespace Jframe\base;
 
 use Jframe;

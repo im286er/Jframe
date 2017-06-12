@@ -1,0 +1,1 @@
+$(document).ready(function () {function randomNumber(min, max) {return Math.floor(Math.random() * (max - min + 1) + min);};$('<?= $formId ?>').bootstrapValidator({message: 'This value is not valid',feedbackIcons: {valid: 'glyphicon glyphicon-ok',invalid: 'glyphicon glyphicon-remove',validating: 'glyphicon glyphicon-refresh'},fields:<?= $fields ?>});});

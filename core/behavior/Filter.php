@@ -9,11 +9,15 @@
 
 namespace Jframe\behavior;
 
-class Filter extends \Jframe\base\Object
+use Jframe\base\Object;
+
+class Filter extends Object
 {
 
     /**
      * The filter method's work
+     * @param $object
+     * @param $method
      */
     public function init($object, $method)
     {

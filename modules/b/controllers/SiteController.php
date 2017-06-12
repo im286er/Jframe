@@ -13,34 +13,10 @@ use Jframe\base\Controller;
 use Jframe\base\Response;
 use Jframe\behavior\AccessFilter;
 
+use app\modules\b\models\UserModel;
+
 class SiteController extends Controller
 {
-
-    /*
-     * behaviors动作解析：
-     * return [
-     *       'verbs' => [// verbs是动作过滤器
-     *           'actions' => [
-     *               'index' => ['post', 'get'] // 这个表示actionIndex方法只能是post或者get方法访问，其余访问方式均会被阻止
-     *           ]
-     *       ],
-     *       'access' => [// access是访问控制器
-     *           'class' => AccessFilter::className(), // 访问控制器的操作类
-     *           'only' => ['index', 'say'], // 访问控制器控制的方法为actionIndex与actionSay方法，其余方法均会被忽略
-     *           'rules' => [// 控制规则,每条规则是一个数组，里面可以包含allow、roles、verbs三种操作.
-     *                   [
-     *                   'allow' => true, // 这条规则表示？，未登录的用户可以访问allow=true
-     *                   'roles' => '?',
-     *               //'verbs' => ['get']
-     *               ],
-     *                   [
-     *                   'allow' => true, // allow为true表示允许，false表示阻止
-     *                   'verbs' => ['get'] // 表示get操作访问上方设置的actionIndex、actionSay方法时GET操作会被允许
-     *               ]
-     *           ]
-     *       ]
-     *   ];
-     */
 
     public function behaviors()
     {
@@ -57,7 +33,7 @@ class SiteController extends Controller
                     [
                         'allow' => true,
                         'roles' => '?',
-                    //'verbs' => ['get']
+                        //'verbs' => ['get']
                     ],
                     [
                         'allow' => true,
@@ -71,7 +47,13 @@ class SiteController extends Controller
     public function actionIndex($ids = 9, $age = 22)
     {
         $this->layout = 'import';
-        return $this->render('//test/abc', ["name" => "Josin", "domain" => 'www.supjos.cn']);
+        $postData = Jframe::$app->request->post();
+        $model = new UserModel();
+        if ($model->load($postData)) {
+            //echo '表单数据加载成功';
+            $model->setError('userName', 'userName 不能为空');
+        }
+        return $this->render('//test/abc', ['model' => $model]);
     }
 
     public function actionSay($name, $age = 18, $place = "hel")

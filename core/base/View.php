@@ -83,6 +83,7 @@ class View extends Object
      * @param string $absoluteFile
      * @param array $variables
      * @return string The ob string in the cache
+     * @throws ViewFileNotFound
      */
     private function getObClean($absoluteFile, array $variables)
     {
@@ -113,6 +114,14 @@ class View extends Object
     public function getController()
     {
         return Jframe::$app->context;
+    }
+
+    /**
+     * After the body do the endBody job
+     */
+    public function endBody()
+    {
+
     }
 
 }

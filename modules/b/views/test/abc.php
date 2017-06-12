@@ -6,18 +6,21 @@
  * Copyright (c) 2017-2020 supjos.cn All Rights Reserved.
  * @author Josin <774542602@qq.com | www.supjos.cn>
  */
-use Jframe\helpers\Html;
+use Jframe\helpers\bootstrap\ActiveForm;
+use Jframe\helpers\bootstrap\Html;
+
 ?>
 <?= Html::beginTag('div', ['class' => 'container']) ?>
 
-<?= Html::beginForm(['id' => 'form0', 'class' => 'form-horizontal', 'method' => 'POST']) ?>
+<?php $form = ActiveForm::begin(['id' => 'form0', 'class' => 'form-horizontal', 'method' => 'POST']) ?>
 
-
-<?= Html::textInput(['class' => 'form-control', 'id' => 'ipname']) ?>
-<?= Html::textInput(['class' => 'form-control', 'id' => 'ipnams']) ?>
-<?= Html::textInput(['class' => 'form-control', 'id' => 'ipnaml']) ?>
-<?= Html::selectInput(['' => '选择', '0' => 's男', '1' => '女'], ['class' => 'form-control']) ?>
+<?= $form->field($model, 'userName')->textInput(['class' => 'form-control']) ?>
+<?= $form->field($model, 'userAge')->textInput(['class' => 'form-control']) ?>
+<?= $form->field($model, 'mobile')->textInput(['class' => 'form-control']) ?>
+<?= $form->field($model, 'gender')->selectInput(['' => '选择', '0' => '男', '1' => '女', '2' => '中性'], ['class' => 'form-control']) ?>
+<?= $form->field($model, 'address')->textInput(['class' => 'form-control']) ?>
 <?= Html::submitButton('提交', ['class' => 'form-control btn btn-warning']) ?>
 
-<?= Html::endForm() ?>
+<?php $form->end(); ?>
+
 <?= Html::endTag('div') ?>

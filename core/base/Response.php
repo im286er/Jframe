@@ -12,6 +12,9 @@ namespace Jframe\base;
 class Response extends Object
 {
 
+    /**
+     * The Response format constants
+     */
     const FORMAT_JSON = 'json';
     const FORMAT_XML = 'xml';
     const FORMAT_RAW = 'raw';
@@ -19,13 +22,13 @@ class Response extends Object
     /**
      * If you change the result of the $format
      * You can change if below:
-     * - 'json' 
+     * - 'json'
      *      : The json will be returned to the web user or interface
      * - 'xml'
      *      : The xml data will be output to the web user or interface invoking
      * - 'raw
      *      : Output the data without any conversion
-     * @var string $format The default format of the output result 
+     * @var string $format The default format of the output result
      */
     public $format = Response::FORMAT_RAW;
 
@@ -36,15 +39,14 @@ class Response extends Object
     private $version = '';
 
     /**
-     * @var array $data The data which will do the conversion 
+     * @var array $data The data which will do the conversion
      */
     public $data = [];
 
     /**
      * Construct the response object for the Response
-     * @param type $data The data which will be convert
-     * @param type $format The data will be apply
-     * @return string|xml|mixed The data which you want
+     * @param array $data The data which will be convert
+     * @param mixed $format The data will be apply
      */
     public function __construct($data = [], $format = null)
     {
@@ -88,9 +90,9 @@ class Response extends Object
 
     /**
      * Change the array data into xml format
-     * @param type $data The data 
-     * @param type $head The head tag
-     * @param type $simplexml Generate the simple xml, recommend simple-xml
+     * @param array $data The data
+     * @param string $head The head tag
+     * @param boolean $simplexml Generate the simple xml, recommend simple-xml
      * @return string
      */
     private function arrToXml($data, $head = '', $simplexml = false)

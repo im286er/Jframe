@@ -1,19 +1,44 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Welcome everyone to given some advices to improve the Jframe PHP Framework
+ * Copyright (c) 2017.-2020 Jframe www.supjos.cn All Rights Reserved.
+ * Author : Josin
+ * Email  : 774542602@qq.com
  */
 
 namespace Jframe\base;
 
+use Jframe;
 /**
  * The Request component for the Jframe
  * You can access *Request* use Jframe::$app->request to get the Request instance
  */
 class Request extends Object
 {
+
+    /**
+     * @var strng csrfToken To avoid the csrf attack
+     */
+    public static $csrfToken = '';
+
+    /**
+     * @return strng Getting the csrf token
+     */
+    public function getCsrfToken()
+    {
+        session_start();
+        return isset($_SESSION['_csrfToken']) ? $_SESSION['_csrfToken'] : '';
+    }
+
+    /**
+     * @return strng|string
+     */
+    public function setCsrfToken()
+    {
+        $_SESSION['_csrfToken'] = hash_hmac('sha1', time(), 'Jframe', false);
+        return $_SESSION['_csrfToken'];
+    }
 
     /**
      * Return the POST data from the user input
@@ -66,10 +91,6 @@ class Request extends Object
      */
     public function getMethod()
     {
-        if (isset($_POST[$this->methodParam])) {
-            return strtoupper($_POST[$this->methodParam]);
-        }
-
         if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
             return strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
         }

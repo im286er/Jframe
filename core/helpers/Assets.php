@@ -9,12 +9,15 @@
 
 namespace Jframe\helpers;
 
+use Jframe;
+use Jframe\html\Html;
+
 class Assets
 {
 
     public static function register()
     {
-        $path = '/bootstrap/';
+        $path = Jframe::$app->webPath . '/bootstrap/';
         if (!empty(static::$js)) {
             foreach (static::$js as $value) {
                 echo Html::registerJsFile($path . $value);

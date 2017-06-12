@@ -9,6 +9,7 @@
 namespace Jframe;
 
 use Jframe\exception\ClassNotFound;
+use Jframe\exception\ClassNotSetException;
 
 /**
  * The Base class for the PHP Jframe, every one can access it using the Jframe::$app
@@ -16,10 +17,24 @@ use Jframe\exception\ClassNotFound;
  */
 class BaseJframe
 {
+    /**
+     * The universal index count program
+     * @var int
+     */
+    private static $index = 0;
+
+    /**
+     * Getting the index number of the global runtime
+     * @return int The index number
+     */
+    public static function getIndex()
+    {
+        return self::$index++;
+    }
 
     /**
      * Return the Application's object to the user to use the global variables
-     * @var Application $app 
+     * @var Application $app
      */
     public static $app = null;
 
@@ -33,7 +48,7 @@ class BaseJframe
 
     /**
      * The class-map loading array
-     * @var array $classMap The classmap file which can make the load system a little more faster 
+     * @var array $classMap The classmap file which can make the load system a little more faster
      */
     private static $classMap = [];
 
@@ -53,10 +68,8 @@ class BaseJframe
         if (!empty(self::$classMap) && \array_key_exists($className, self::$classMap)) {
             require_once(self::$classMap[$className]);
         } else {
-            // 命名空间的第一个斜线之前的名字
             $slashPosition = strpos($className, '\\');
             $rootAlias = substr($className, 0, $slashPosition);
-            // 将命名空间的其余路径合并成可用的路径
             $alias = '@' . $rootAlias;
             if (!empty(self::$aliases) && \array_key_exists($alias, self::$aliases)) {
                 $classFilePath = self::$aliases[$alias] . str_replace('\\', '/', substr($className, $slashPosition));
@@ -90,6 +103,7 @@ class BaseJframe
     /**
      * Get the aliase value from the setting Aliases
      * @param string $aliasName
+     * @return mixed
      */
     public static function getAlias($aliasName)
     {
@@ -99,24 +113,42 @@ class BaseJframe
     }
 
     /**
-     * @param string $className
+     * @param string $classData
      * @param array $params The properties which you want to set for the newly instance Class
      * @return Object The instance of the given class with the name
+     * @throws ClassNotSetException
      */
-    public static function createObject($className, array $params = [])
+    public static function createObject($classData, array $params = [])
     {
-        $classInstance = (new \ReflectionClass($className))->newInstanceArgs();
-        if (!$classInstance instanceof $className) {
-            throw new ClassNotFound("Create Class Instance [[{$className}]] Failure.");
+        if (is_string($classData)) {
+            $tmpClassData = $classData;
+            $classData = [];
+            $classData['class'] = $tmpClassData;
         }
-        if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                if (property_exists($classInstance, $key)) {
-                    $classInstance->$key = $value;
+        if (!isset($classData['class'])) {
+            throw new ClassNotSetException("[[class]] attribute not set.", 300);
+        }
+        $className = $classData['class'];
+        unset($classData['class']);
+        $reflectionClass = new \ReflectionClass($className);
+        $hasContructor = $reflectionClass->getConstructor();
+        if (is_null($hasContructor)) {
+            $classObject = $reflectionClass->newInstanceArgs();
+        } else {
+            $classObject = $reflectionClass->newInstanceArgs($classData);
+        }
+        if ($classObject instanceof $className) {
+            if (!empty($params)) {
+                foreach ($params as $property => $value) {
+                    if (property_exists($classObject, $property)) {
+                        $propertyAccess = new \ReflectionProperty($className, $property);
+                        $propertyAccess->setAccessible(true);
+                        $propertyAccess->setValue($classObject, $value);
+                    }
                 }
             }
+            return $classObject;
         }
-        return $classInstance;
     }
 
     /**
@@ -126,6 +158,18 @@ class BaseJframe
     public static function getAllAliases()
     {
         return self::$aliases;
+    }
+
+
+    /**
+     * Get the class name without the namespace
+     * @param $model
+     * @return bool|string
+     */
+    public static function getOnlyClassName($model)
+    {
+        $className = get_class($model);
+        return substr($className, strrpos($className, '\\') + 1);
     }
 
 }

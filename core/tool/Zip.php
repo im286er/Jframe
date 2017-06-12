@@ -12,9 +12,22 @@ class Zip
      * @var \ZIPARCHIVE The mode for the system to create the zip files
      */
     private $_overwrite = \ZIPARCHIVE::CREATE;
+    /**
+     * @var array The files added to the zip file
+     */
+    private $_fileSet = [];
+    /**
+     * @var boolean Download the zip file when create it or only to save it
+     */
+    private $_downloadZip = false;
+    /**
+     *
+     * @var array The fileset when extract the file from the zip archive
+     */
+    private $_extractFilters = null;
 
     /**
-     * @param \ZIPARCHIVE $mode The zip create mode
+     * @param int|\ZIPARCHIVE $mode The zip create mode
      */
     public function setOpenMode($mode = \ZIPARCHIVE::CREATE)
     {
@@ -22,11 +35,6 @@ class Zip
             $this->_overwrite = $mode;
         }
     }
-
-    /**
-     * @var array The files added to the zip file
-     */
-    private $_fileSet = [];
 
     /**
      * @param string|array $absoluteFileNames The file or file set which need to add to the zip file
@@ -60,11 +68,6 @@ class Zip
             }
         }
     }
-
-    /**
-     * @var boolean Download the zip file when create it or only to save it
-     */
-    private $_downloadZip = false;
 
     /**
      * @param boolean $mode Set the system to force the browser to download it or save the zip file in the directory only
@@ -111,12 +114,6 @@ class Zip
     }
 
     /**
-     *
-     * @var array The fileset when extract the file from the zip archive
-     */
-    private $_extractFilters = null;
-
-    /**
      * @param array|string|null $files The file or fileset which neet to extract, if you don't know, please set it null<br>
      * to extract all the files the zip archive contains
      */
@@ -136,6 +133,7 @@ class Zip
     /**
      * @param string $zipFile The path for the user to store the files from the zip archive
      * @param string $extractPath The zip archive need to be extracted.
+     * @return bool
      */
     public function extractZip($zipFile = '', $extractPath = '')
     {

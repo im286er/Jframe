@@ -163,7 +163,7 @@ The **OS Environment** is：
 		]
 	Means that the action named 'index' : ***actionIndex()*** will only accept the request method ***POST & GET***, The other request method will reject.
 
-	The ***access*** element:
+    The ***access*** element:
 		
 		'access' => [
 		    'class' => AccessFilter::className(),
@@ -180,10 +180,51 @@ The **OS Environment** is：
 		        ]
 		    ]
 		]
+		
 	Must contains the class elment which tells us the class named ***AccessFilter*** to deal the process.
 
 	The rules are:
 	
-	Only deal with the ***actionIndex() & actionSay()***, Each rule in the rules array define the rule, the example before means that when the user is guest[not login-in] will ***allow*** to access the ***actionIndex & actionSay***, The second means that Only the request method ***GET*** allowed to access the ***actionIndex() & actionSay()***.
+	Only deal with the **actionIndex() & actionSay()**, Each rule in the rules array define the rule, the example before means that when the user is guest[not login-in] will ***allow*** to access the ***actionIndex & actionSay***, The second means that Only the request method ***GET*** allowed to access the ***actionIndex() & actionSay()***.
 
-***4***：***More features waiting you to join the project~~~***
+***4***：Model Validator
+    
+   Each class derived from the Jframe\base\Model has the model validate attributes
+    
+   A simple example like that below:
+    
+    
+    class UserModel extends Model
+    {
+        public $userName;
+        public $userAge;
+        public $mobile;
+        public $gender;
+    
+        /**
+         * The validate rules
+         * @return array
+         */
+        public function rules()
+        {
+            return [
+                [['userName', 'mobile', 'userAge', 'gender'], 'required'],
+                [['mobile'], 'email', 'message' => '邮箱非法!']
+            ];
+        }
+    
+        public function attributeLabels()
+        {
+            return [
+                'userName'=>'用户姓名',
+                'mobile'=>'手机号码',
+                'gender'=>'性别'
+            ];
+        }
+    }
+    
+    It was extreamly similar with the Yii framework, as i used mostly yii in
+    my PHP development. So learn some experience from it, and apply it in Jframe
+    
+
+***5***：***More features waiting you to join the project~~~***

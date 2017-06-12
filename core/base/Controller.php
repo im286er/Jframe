@@ -4,7 +4,7 @@
  * This is the Base Controller fo one of the derived controller setting of the Jframe
  * You has several choice to make your controller to finish the Job
  * But i recommend you to avoid it. and use the library class for you to do the same work.
- * Also if you have understood the meanning of the Jframe, Glad to me receving the code for your hand.
+ * Also if you have understood the meaning of the Jframe, Glad to me receiving the code for your hand.
  * License : MIT
  * Copyright (c) 2017-2020 supjos.cn All Rights Reserved.
  */
@@ -16,14 +16,21 @@ use Jframe;
 class Controller extends Component
 {
 
-    public function __construct()
-    {
-        $this->on(self::EVENT_BEFORE_ACTION, function() {
-            echo 'Before';
-        });
-    }
+    /**
+     * @var bool
+     */
+    public $enableCsrfFilter = false;
 
+    /**
+     * Event name of the Event
+     * EVENT_BEFORE_ACTION means the beforeAction
+     */
     const EVENT_BEFORE_ACTION = 'beforeAction';
+
+    /**
+     * Event name of the afterEvent
+     * After the controller invokes the method, it will execute
+     */
     const EVENT_AFTER_ACTION = 'afterAction';
 
     /**
@@ -62,7 +69,6 @@ class Controller extends Component
     public function beforeAction()
     {
         $this->trigger(self::EVENT_BEFORE_ACTION);
-        echo 'before';
     }
 
     /**

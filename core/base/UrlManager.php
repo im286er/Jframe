@@ -1,23 +1,38 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Welcome everyone to given some advices to improve the Jframe PHP Framework
+ * Copyright (c) 2017.-2020 Jframe www.supjos.cn All Rights Reserved.
+ * Author : Josin
+ * Email  : 774542602@qq.com
  */
 
 namespace Jframe\base;
 
 use Jframe;
+use Jframe\exception\ControllerNotFound;
+use Jframe\exception\MethodNotFound;
+use Jframe\exception\ParameterNotMatch;
+use Jframe\exception\VerbsNotAllowed;
+use Jframe\exception\CsrfAttackException;
 
 class UrlManager extends Object
 {
+
+    private static function changeLowerArray($value)
+    {
+        return strtolower($value);
+    }
 
     /**
      * dealUrl to deal with the request from the user
      */
     public function dealUrl()
     {
+        /**
+         * The Web URL of the Jframe
+         */
+        Jframe::$app->webPath = substr(dirname($_SERVER['SCRIPT_NAME']), strlen(dirname(dirname($_SERVER['SCRIPT_NAME']))));
         if (isset($_SERVER['PATH_INFO'])) {
             $pathInfo = trim($_SERVER['PATH_INFO'], '/');
             $urlInfo = explode('/', $pathInfo);
@@ -29,11 +44,11 @@ class UrlManager extends Object
     }
 
     /**
-     * Verify the parameter from the user input of the url- PATH-INFO
-     * @param type $urlInfo
-     * @param type $checkModule
-     * @throws \Jframe\exception\ParameterNotMatch
-     * @throws \Jframe\exception\MethodNotFound
+     * Verify the parameter from the user input of the url- [[PATH-INFO]]
+     * @param array $urlInfo
+     * @param boolean $checkModule
+     * @throws Jframe\exception\ControllerNotFound
+     * @throws Jframe\exception\MethodNotFound
      */
     private function handle($urlInfo, $checkModule = true)
     {
@@ -66,10 +81,10 @@ class UrlManager extends Object
                     unset($urlInfo[0], $urlInfo[1], $urlInfo[2]);
                     $this->invokeMethodWithParameter($urlInfo, $controllerClassName, $method, $controllerName);
                 } else {
-                    throw new \Jframe\exception\MethodNotFound("Method [[{$method}]] Not Found In Controller [{$controllerName}]", 102);
+                    throw new MethodNotFound("Method [[{$method}]] Not Found In Controller [{$controllerName}]", 102);
                 }
             } else {
-                throw new \Jframe\exception\ControllerNotFound("Controller [[{$controllerName}]] Not Found!");
+                throw new ControllerNotFound("Controller [[{$controllerName}]] Not Found!");
             }
         } else {
             // Controller
@@ -96,17 +111,12 @@ class UrlManager extends Object
                     unset($urlInfo[0], $urlInfo[1]);
                     $this->invokeMethodWithParameter($urlInfo, $controllerClassName, $method, $controllerName);
                 } else {
-                    throw new \Jframe\exception\MethodNotFound("Method [{$method}] Not Found In Controller [{$controllerName}]", 102);
+                    throw new MethodNotFound("Method [{$method}] Not Found In Controller [{$controllerName}]", 102);
                 }
             } else {
-                throw new \Jframe\exception\ControllerNotFound("Controller [{$controllerName}] Not Found!");
+                throw new ControllerNotFound("Controller [{$controllerName}] Not Found!");
             }
         }
-    }
-
-    private static function changeLowerArray($value)
-    {
-        return strtolower($value);
     }
 
     /**
@@ -116,6 +126,20 @@ class UrlManager extends Object
     private function invokeMethodWithParameter($urlInfo, $controllerClassName, $method, $controllerName)
     {
         $controllerObj = new $controllerClassName();
+        // Get the csrf token
+        if ($controllerObj->enableCsrfFilter) {
+            $csrfToken = Jframe::$app->request->getCsrfToken();
+            $data = array_merge(Jframe::$app->request->get(), Jframe::$app->request->post());
+            if (!empty($data['_data']) && $data['_data'] == 'data') {
+                if (!isset($data['_csrf'])) {
+                    throw new CsrfAttackException("Csrf attack exception", 501);
+                }
+                if (isset($data['_csrf']) && $data['_csrf'] !== $csrfToken) {
+                    throw new CsrfAttackException("Csrf attack exception", 501);
+                }
+            }
+        }
+
         $controllerObj->beforeAction();
         // Some variables in the Jframe
         $controllerObj->id = $controllerName;
@@ -134,7 +158,7 @@ class UrlManager extends Object
                     if (strcmp('action' . ucwords($k), $method) == 0) {
                         $requestMethod = Jframe::$app->request->getMethod();
                         if (!in_array(strtolower($requestMethod), $v)) {
-                            throw new Jframe\exception\VerbsNotAllowed("Request Method [[{$requestMethod}]] Not Allowed!", 103);
+                            throw new VerbsNotAllowed("Request Method [[{$requestMethod}]] Not Allowed!", 103);
                         }
                     }
                 }
@@ -142,7 +166,7 @@ class UrlManager extends Object
             // To deal the access controller
             if (isset($behaviors['access'])) {
                 if (!isset($behaviors['access']['class'])) {
-                    throw new Jframe\exception\ParameterNotMatch("Paramter [[class]] must be set!", 106);
+                    throw new ParameterNotMatch("Paramter [[class]] must be set!", 106);
                 }
                 $className = $behaviors['access']['class'];
                 unset($behaviors['access']['class']);
@@ -150,7 +174,7 @@ class UrlManager extends Object
                 $instance->init($controllerObj, strtolower(ucwords(substr($method, 6))));
             }
         }
-        // After check the ver fileter continue the body action
+        // After check the ver filter continue the body action
         $controllerInstanceRef = new \ReflectionMethod($controllerClassName, $method);
         $pvAssoc = [];
         $passParam = [];
@@ -168,7 +192,7 @@ class UrlManager extends Object
                 $tmpV = $v->getDefaultValue();
             }
             if (!array_key_exists($v->name, $pvAssoc) && ($v->isDefaultValueAvailable() == FALSE)) {
-                throw new \Jframe\exception\ParameterNotMatch("Parameter [[{$v->name}]] Not Match!", 103);
+                throw new ParameterNotMatch("Parameter [[{$v->name}]] Not Match!", 103);
             }
             if (array_key_exists($v->name, $pvAssoc)) {
                 $tmpV = $pvAssoc[$v->name];
@@ -178,11 +202,11 @@ class UrlManager extends Object
         // Invoke the function
         $result = $controllerInstanceRef->invokeArgs($controllerObj, $passParam);
         // Do something if you want to change the data of the code
-        $controllerObj->afterAction();
-        //
         $response = Jframe::$app->response;
         $response->data = $result;
-        return $response->formatOut();
+        $response->formatOut();
+        $controllerObj->afterAction();
+        exit(0);
     }
 
 }

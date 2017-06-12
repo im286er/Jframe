@@ -9,6 +9,9 @@
 
 namespace Jframe\behavior;
 
+use Jframe\exception\GuestNotAllowedException;
+use Jframe\exception\MethodNotFound;
+
 /**
  * The Access controller in order to help improve the identity to access
  */
@@ -17,7 +20,7 @@ class AccessFilter extends Filter
 
     /**
      * @var array $only Only to controller which method, It may be a array
-     * eg. 
+     * eg.
      * [
      *    'index', 'update'
      * ]
@@ -27,7 +30,7 @@ class AccessFilter extends Filter
 
     /**
      * @var array $rules The rules for the access to do
-     * eg. 
+     * eg.
      * [
      *  [
      *    'verbs'=>['post', 'get'],
@@ -46,6 +49,8 @@ class AccessFilter extends Filter
      * eg.
      * @param \Jframe\base\Controller $object The controller instance
      * @param string $method The controller's current calling method
+     * @throws \Jframe\exception\GuestNotAllowedException
+     * @throws \Jframe\exception\MethodNotFound
      */
     public function init($object, $method)
     {
@@ -62,7 +67,7 @@ class AccessFilter extends Filter
                         if (in_array($verb, $verbs)) {
                             // check wheather allow or not
                             if (!$allow) {
-                                throw new \Jframe\exception\MethodNotFound("Request Method [[{$verb}]] Not Allowed", 107);
+                                throw new MethodNotFound("Request Method [[{$verb}]] Not Allowed", 107);
                             }
                         }
                     }
@@ -71,16 +76,16 @@ class AccessFilter extends Filter
                         if ($roles == '?') {
                             if (\Jframe::$app->user->getIsGuest()) {
                                 if (!$allow) {
-                                    throw new \Jframe\exception\GuestNotAllowedException("[[Guest]] Not Allowed!", 108);
+                                    throw new GuestNotAllowedException("[[Guest]] Not Allowed!", 108);
                                 }
                             }
                         }
                         if ($roles == '@') {
                             if (\Jframe::$app->user->getIsGuest()) {
-                                throw new \Jframe\exception\GuestNotAllowedException("[[Guest]] Not Allowed!", 108);
+                                throw new GuestNotAllowedException("[[Guest]] Not Allowed!", 108);
                             } else {
                                 if (!$allow) {
-                                    throw new \Jframe\exception\GuestNotAllowedException("[[Guest]] Not Allowed!", 108);
+                                    throw new GuestNotAllowedException("[[Guest]] Not Allowed!", 108);
                                 }
                             }
                         }
