@@ -20,6 +20,7 @@ use Jframe;
 
 class Model extends Component
 {
+
     /**
      * Event-constants for the Model
      */
@@ -33,7 +34,6 @@ class Model extends Component
      */
     public function setError($property = '', $errors = '')
     {
-        echo 'hehe';
         $this->errors[$property] = $errors;
     }
 
@@ -83,6 +83,7 @@ class Model extends Component
             }
             return true;
         }
+        return false;
     }
 
     /**
@@ -127,4 +128,5 @@ class Model extends Component
     {
         $this->trigger(static::EVENT_AFTER_VALIDATE);
     }
+
 }

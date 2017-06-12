@@ -14,9 +14,9 @@ use Jframe;
 use Jframe\base\Controller;
 use Jframe\di\Reflex;
 
-
 class SiteController extends Controller
 {
+
     public $enableCsrfFilter = true;
 
     public function behaviors()
@@ -35,6 +35,7 @@ class SiteController extends Controller
         $postData = Jframe::$app->request->post();
         $model = new UserModel();
         if ($model->load($postData)) {
+            $model->setError('userName', 'Not NULL');
         }
         $this->render('index', ['model' => $model]);
     }

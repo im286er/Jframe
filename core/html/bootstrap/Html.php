@@ -15,6 +15,7 @@ use Jframe\html\Html as SimpleHtml;
 
 class Html extends SimpleHtml
 {
+
     /**
      * Generate the Bootstrap3 text-input control
      * @param array $htmlOptions
@@ -108,8 +109,7 @@ class Html extends SimpleHtml
                         $attribute .= $validatorInfo[1];
                     }
                     $validators[$validatorInfo[0]] = ['message' => $attribute];
-                    $smallTip .= static::beginTag('small', ['data-bv-validator' => $validatorInfo[0], 'data-bv-validator-for' => "{$controlName}",
-                            'class' => 'help-block', 'style' => 'display:none']) . static::endTag('small');
+                    $smallTip .= static::beginTag('small', ['data-bv-validator' => $validatorInfo[0], 'data-bv-validator-for' => "{$controlName}", 'class' => 'help-block', 'style' => 'display:none']) . static::endTag('small');
                 }
             }
         }

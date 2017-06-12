@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Welcome everyone to given some advices to improve the Jframe PHP Framework
  * Copyright (c) 2017.-2020 Jframe www.supjos.cn All Rights Reserved.
@@ -15,25 +16,30 @@ use Jframe\tool\Inflector;
 
 class ActiveForm extends Jframe\base\Object
 {
+
     /**
      * The ActiveForm number
      * @var int
      */
     private $index = 0;
+
     /**
      * The formName of the ActiveForm
      * It was the form's id
      * @var string
      */
     private $formName = '';
+
     /**
      * @var object The model object which you want to fetch value from
      */
     private $model;
+
     /**
      * @var string The attribute which the value from the model's attribute
      */
     private $attribute;
+
     /**
      * The rendering layout associated with the result
      *
@@ -148,8 +154,8 @@ class ActiveForm extends Jframe\base\Object
          */
         $label = Html::beginTag('label', ['class' => 'control-label', 'for' => $for]) . static::getInflectorName($this->model, $this->attribute) . Html::endTag('label');
         $control = Html::textInput($htmlOptions);
-        //$error = Html::beginTag('span', ['class' => 'help-block']) . $this->model->getErrors($this->attribute) . Html::endTag('span');
-        $error = Html::dealValidator($this->model, $this->attribute, $htmlOptions['name'])[1];
+        $error = Html::beginTag('span', ['class' => 'help-block']) . $this->model->getErrors($this->attribute) . Html::endTag('span');
+        // $error = Html::dealValidator($this->model, $this->attribute, $htmlOptions['name'])[1];
         return Html::beginTag('div', ['class' => 'form-group']) .
             str_replace(['{label}', '{control}', '{error}'], [$label, $control, $error], $this->layout) .
             Html::endTag('div');
@@ -227,4 +233,5 @@ class ActiveForm extends Jframe\base\Object
     {
         return $this->formName;
     }
+
 }
