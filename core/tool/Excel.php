@@ -22,7 +22,7 @@ class Excel
     private static $_excelObject = null;
 
     /**
-     * @var \josin\excel\Excel The object of the Excel class
+     * @var \Jframe\tool\Excel The object of the Excel class
      */
     private static $instance = null;
 
@@ -48,7 +48,7 @@ class Excel
     }
 
     /**
-     * @return \josin\excel\Excel excelObject of the instance of the PHPExcel
+     * @return \Jframe\tool\Excel excelObject of the instance of the PHPExcel
      */
     public static function getInstance()
     {
