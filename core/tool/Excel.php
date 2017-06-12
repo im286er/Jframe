@@ -347,8 +347,8 @@ class Excel
 
     /**
      * To extend the excel row with 26 rows
-     * @param number $begin_index_row The start extend row with default value 0
-     * @param array $excel_row The excel row in the system
+     * @param number $excel_row The start extend row with default value 0
+     * @param array $begin_index_row The excel row in the system
      * @return integer The next begin_index_row The system must save it for the next need
      * @author Josin
      */

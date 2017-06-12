@@ -100,7 +100,9 @@ class ActiveForm extends Jframe\base\Object
     public static function begin($options = [])
     {
         $formObject = Jframe::createObject(self::className(), $options);
-        echo Html::beginTag('form', array_merge(['id' => $formObject->getFormName()], $formObject->formOptions));
+        echo Html::beginTag('form', array_merge(['id' => $formObject->getFormName()], $formObject->formOptions)) .
+        Html::textInput(['value' => Jframe::$app->request->setCsrfToken(), 'type' => 'hidden', 'name' => '_csrf']) .
+        Html::textInput(['name' => '_data', 'value' => 'data', 'type' => 'hidden']);
         return $formObject;
     }
 

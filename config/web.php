@@ -26,7 +26,10 @@ return [
         ],
         'Reflex' => [
             'class' => 'Jframe\di\Reflex',
-        ]
+        ],
+        'session' => [
+            'class' => 'Jframe\base\Session',
+        ],
     ],
 ];
 

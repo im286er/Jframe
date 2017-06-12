@@ -10,6 +10,7 @@
 namespace Jframe\base;
 
 use Jframe;
+
 /**
  * The Request component for the Jframe
  * You can access *Request* use Jframe::$app->request to get the Request instance
@@ -27,8 +28,7 @@ class Request extends Object
      */
     public function getCsrfToken()
     {
-        session_start();
-        return isset($_SESSION['_csrfToken']) ? $_SESSION['_csrfToken'] : '';
+        return Jframe::$app->session->getSession('_csrfToken', '');
     }
 
     /**
@@ -36,8 +36,8 @@ class Request extends Object
      */
     public function setCsrfToken()
     {
-        $_SESSION['_csrfToken'] = hash_hmac('sha1', time(), 'Jframe', false);
-        return $_SESSION['_csrfToken'];
+        Jframe::$app->session->setSession("_csrfToken", hash_hmac('sha1', time(), 'Jframe', false));
+        return $this->getCsrfToken();
     }
 
     /**

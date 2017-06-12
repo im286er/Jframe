@@ -19,6 +19,11 @@ use Jframe\exception\CsrfAttackException;
 class UrlManager extends Object
 {
 
+    /**
+     * Change the array's value into lower
+     * @param type $value
+     * @return type
+     */
     private static function changeLowerArray($value)
     {
         return strtolower($value);
