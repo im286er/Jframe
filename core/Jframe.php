@@ -11,6 +11,7 @@ require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'BaseJframe.php');
  */
 class Jframe extends \Jframe\BaseJframe
 {
+
     /**
      * Hi everyone reading the Jframe source code.
      * There are some suggestions help you to understand the source code of the
@@ -27,10 +28,11 @@ class Jframe extends \Jframe\BaseJframe
      * Wish you love the Jframe PHP framework
      *
      * PHP is the word best popular programing language
-     **/
+     * */
 }
 
 /**
  * The autoload function which can use to load the class file automatically
  */
 spl_autoload_register(['Jframe', 'autoload'], true, true);
+require(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');

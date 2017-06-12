@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "dda5406859205e41bd802546d688e480",
+    "packages": [
+        {
+            "name": "josin/josincurl",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liqiongfan/JosinCurl.git",
+                "reference": "877d7b426c4c94b8f4d6c6a38e96912f96258050"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/liqiongfan/JosinCurl/877d7b426c4c94b8f4d6c6a38e96912f96258050.zip",
+                "reference": "877d7b426c4c94b8f4d6c6a38e96912f96258050",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "josin\\josincurl\\": ""
+                },
+                "files": [
+                    "Curl.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Josins",
+                    "email": "774542602@qq.com"
+                }
+            ],
+            "description": "Way to easy use the PHP curl",
+            "time": "2017-06-12T08:17:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

@@ -1,0 +1,43 @@
+[
+    {
+        "name": "josin/josincurl",
+        "version": "1.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/liqiongfan/JosinCurl.git",
+            "reference": "877d7b426c4c94b8f4d6c6a38e96912f96258050"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/liqiongfan/JosinCurl/877d7b426c4c94b8f4d6c6a38e96912f96258050.zip",
+            "reference": "877d7b426c4c94b8f4d6c6a38e96912f96258050",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2017-06-12T08:17:35+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "josin\\josincurl\\": ""
+            },
+            "files": [
+                "Curl.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Josins",
+                "email": "774542602@qq.com"
+            }
+        ],
+        "description": "Way to easy use the PHP curl"
+    }
+]

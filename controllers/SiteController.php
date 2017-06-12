@@ -12,7 +12,7 @@ namespace app\controllers;
 use app\modules\b\models\UserModel;
 use Jframe;
 use Jframe\base\Controller;
-use Jframe\di\Reflex;
+use josin\curl\Curl;
 
 class SiteController extends Controller
 {

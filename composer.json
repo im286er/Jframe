@@ -1,0 +1,5 @@
+{
+    "require": {
+        "josin/josincurl": "^1.0"
+    }
+}
